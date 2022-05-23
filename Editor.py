@@ -207,7 +207,7 @@ class Window:
             print(str(i) + " " + stack)
             i += 1
  
-                      
+                      #prueba
 root = Tk()
 window = Window(root)
 root.bind("<Key>", lambda event: window.update())
