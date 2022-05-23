@@ -1,7 +1,9 @@
 from tkinter import *
 from collections import deque
  
- 
+
+#Prueba de que esta porqueria sirva
+
 class Window:
     def __init__(self, master):
         self.master = master
