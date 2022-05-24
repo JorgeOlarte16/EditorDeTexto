@@ -49,7 +49,7 @@ class Window:
  
         self.master.config(menu = self.menu)
  
-        self.B1 = Button(self.Main, text = "Print", width = 8, command = self.display)
+        self.B1 = Button(self.Main, text = "Save", width = 8, command = self.save)
         self.B1.pack(padx = 5, pady = 5, side = LEFT)
  
         self.B2 = Button(self.Main, text = "Clear", width = 8, command = self.clear)
@@ -182,7 +182,7 @@ class Window:
         self.tagHighlight()
         self.scan()
  
-    def display(self):
+    def save(self):
 
         files = [('Text Document', '*.txt')]
         file = asksaveasfile(filetypes = files, defaultextension = files)
