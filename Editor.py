@@ -1,5 +1,6 @@
 from tkinter import *
 from collections import deque
+from tkinter.filedialog import asksaveasfile
  
 
 #Prueba de que esta porqueria sirva
@@ -182,7 +183,11 @@ class Window:
         self.scan()
  
     def display(self):
-        print(self.T1.get("1.0", "end"))     
+
+        files = [('Text Document', '*.txt')]
+        file = asksaveasfile(filetypes = files, defaultextension = files)
+        f = open(file.name, "a")
+        f.write(self.T1.get("1.0", "end"))   
  
     def clear(self):
         self.T1.delete("1.0", "end")
