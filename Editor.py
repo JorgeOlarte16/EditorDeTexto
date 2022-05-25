@@ -1,9 +1,6 @@
 from tkinter import *
 from collections import deque
 from tkinter.filedialog import asksaveasfile
- 
-
-#Prueba de que esta porqueria sirva
 
 class Window:
     def __init__(self, master):
@@ -213,8 +210,7 @@ class Window:
         for stack in self.stack:
             print(str(i) + " " + stack)
             i += 1
- 
-                      #prueba
+
 root = Tk()
 window = Window(root)
 root.bind("<Key>", lambda event: window.update())
