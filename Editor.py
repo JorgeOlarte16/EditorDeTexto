@@ -8,34 +8,33 @@ class Window:
     def __init__(self, master):
         self.master = master
         self.master.option_add("*Font", "Verdana 12")
-        #self.master.option_add("*Background", "Black")
+        
  
         self.Main = Frame(self.master)
  
-        self.stack = deque(maxlen = 10)
+        self.stack = deque(maxlen = 10)  #Creacion y configuracion de la ventana del editor
         self.stackcursor = 0
  
         self.L1 = Label(self.Main, text = "EDITOR DE TEXTO")
         self.L1.pack(padx = 5, pady = 5)
  
- 
+        self.T1 = Text(self.Main, width = 90, height = 25)
         #---------
  
-        self.T1 = Text(self.Main, width = 90, height = 25)
-
+        
         self.T1.tag_configure("red", foreground = "red", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("orange", foreground = "orange", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("blue", foreground = "blue", font = ("Verdana", "12", "bold"))
-        self.T1.tag_configure("purple", foreground = "purple", font = ("Verdana", "12", "bold"))
-        self.T1.tag_configure("green", foreground = "green", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("purple", foreground = "purple", font = ("Verdana", "12", "bold"))  #Configuracion de las etiquetas que permiten
+        self.T1.tag_configure("green", foreground = "green", font = ("Verdana", "12", "bold"))    #resaltar las palabras reservadas
         self.T1.tag_configure("gold", foreground = "gold", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("brown", foreground = "brown", font = ("Verdana", "12", "bold"))
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["RETORNA", "FINSI", "SI", "ELSE", "SEGUN", "CASO", "ROMPER", "HAS", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER"],
+        self.wordlist = [ ["RETORNA", "FINSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAS", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER"],
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
-                          ["INICIO", "FINAL"],
+                          ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
                           ["Y", "O", "NO", "MAYOR", "MENOR", "IGUAL", "MAYORI", "MENORI", "DIFERENTE",]]
  
@@ -46,22 +45,22 @@ class Window:
         #---------
  
         self.menu = Menu(self.Main)
-        self.menu.add_command(label = "Print", command = self.print_stack)
-        self.menu.add_command(label = "Undo", command = self.undo)
-        self.menu.add_command(label = "Redo", command = self.redo)
+        self.menu.add_command(label = "Imprimir", command = self.print_stack)
+        self.menu.add_command(label = "Deshacer", command = self.undo)          
+        self.menu.add_command(label = "Rehacer", command = self.redo)
  
         self.master.config(menu = self.menu)
  
-        self.B1 = Button(self.Main, text = "Save", width = 8, command = self.save)
+        self.B1 = Button(self.Main, text = "Guardar", width = 8, command = self.save)
         self.B1.pack(padx = 5, pady = 5, side = LEFT)
  
-        self.B2 = Button(self.Main, text = "Clear", width = 8, command = self.clear)
+        self.B2 = Button(self.Main, text = "Limpiar", width = 8, command = self.clear)
         self.B2.pack(padx = 5, pady = 5, side = LEFT)
- 
-        self.B3 = Button(self.Main, text = "Undo", width = 8, command = self.undo)
+                                                                                        #Creacion de los botones que realizan algunas
+        self.B3 = Button(self.Main, text = "Deshacer", width = 8, command = self.undo)  #de las funciones del editor
         self.B3.pack(padx = 5, pady = 5, side = LEFT)
  
-        self.B4 = Button(self.Main, text = "Redo", width = 8, command = self.redo)
+        self.B4 = Button(self.Main, text = "Rehacer", width = 8, command = self.redo)
         self.B4.pack(padx = 5, pady = 5, side = LEFT)
 
         self.B4 = Button(self.Main, text = "Verificar", width = 8, command = self.verificar)
@@ -69,20 +68,16 @@ class Window:
  
         self.Main.pack(padx = 5, pady = 5)
  
-    def verificar(self):
-        texto = self.T1.get("1.0", "end")
+    def verificar(self):                    
+        texto = self.T1.get("1.0", "end")   
         x = texto.split("\n")
         x.pop(len(x)-1)
 
         print(x)
-
-        regex_Patterns = [r'ENTERO ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*',
-                  r'REAL ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*',
-                  r'BOOLEANO ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*'
-                ]
-        if x[0]!="INICIO":
-            print("No inicia")
-            return "No inicia"
+                
+        if x[0]!="INICIO":          #Funcion que se encargara de verificar que el texto ingresado
+            print("No inicia")      #este correcto mediante los automatas diseñados y programados
+            return "No inicia"      #por los otros grupos
         
         elif x[len(x)-1]!="FINAL":
             print("No finaliza")
@@ -91,23 +86,11 @@ class Window:
         x.pop(0)
         x.pop(len(x)-1)
 
-        for linea in x:
-            for pattern in regex_Patterns:
-                a = re.search(pattern, linea)
-                if (a != None):
-                    print(a)
-                    break
-
-            if(a == None):
-                b = re.search(linea, texto)
-                break
-        
-        
-
+    
     def tagHighlight(self):
-        start = "1.0"
-        end = "end"
-         
+        start = "1.0"                   #Funcion que se encarga de identificar las palabras
+        end = "end"                     #reservadas y resaltarlas segun las etiquetas previamente
+                                        #definidas
         for mylist in self.wordlist:
             num = int(self.wordlist.index(mylist))
  
@@ -135,18 +118,23 @@ class Window:
                          
  
     def check(self, index, pre, post):
-        letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+        letters1 = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
                    "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
- 
+
+        letters2 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
+                   "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
         if self.T1.get(pre) == self.T1.get(index):
             pre = index
         else:
-            if self.T1.get(pre) in letters:
+            if self.T1.get(pre) in letters1:
                 return 0
- 
-        if self.T1.get(post) in letters:
+            elif self.T1.get(pre) in letters2:    #Funcion que se encarga de validar las letras
+                return 0                          #en una cadena para evitar resaltar palabras 
+        if self.T1.get(post) in letters1:         #que contienen palabras reservadas
             return 0
- 
+        elif self.T1.get(post) in letters2:
+            return 0
         return 1
  
  
@@ -154,8 +142,8 @@ class Window:
         start = "1.0"
         end = "end"
         mycount = IntVar()
- 
-        regex_patterns = [r'".*"', r'#.*']
+                                            #Funcion para resaltar comentarios y cadenas
+        regex_patterns = [r'".*"', r'#.*']  #mediante expresiones regulares
  
         for pattern in regex_patterns:
             self.T1.mark_set("start", start)
@@ -176,10 +164,10 @@ class Window:
                 self.T1.mark_set("start", "%s+%sc" % (index, mycount.get()))
  
  
-    def indent(self, widget):
+    def indent(self, widget):       
  
-        index1 = widget.index("insert")
-        index2 = "%s-%sc" % (index1, 1)
+        index1 = widget.index("insert")      #Funcion que permite separar bloques de codigo
+        index2 = "%s-%sc" % (index1, 1)      #mediante indentado
         prevIndex = widget.get(index2, index1)
  
         prevIndentLine = widget.index(index1 + "linestart")
@@ -211,45 +199,45 @@ class Window:
  
     def getIndex(self, index):
         while True:
-            if self.T1.get(index) == " ":
-                index = "%s+%sc" % (index, 1)
-            else:
+            if self.T1.get(index) == " ":       #Funcion directamente relacionada a la anterior
+                index = "%s+%sc" % (index, 1)   #que permite obtener la ubicacion del ultimo indentado
+            else:                               
                 return self.T1.index(index)
             
                     
     def update(self):
         self.stackify()
-        self.tagHighlight()
-        self.scan()
- 
+        self.tagHighlight()     #Funcion que contiene las 3 funciones que
+        self.scan()             #permiten la actualizacion del texto segun se 
+                                #ingresa
     def save(self):
-
+                                #Funcion que se encarga de guardar el texto en txt.
         files = [('Text Document', '*.txt')]
         file = asksaveasfile(filetypes = files, defaultextension = files)
-        f = open(file.name, "a")
+        f = open(file.name, "a")                
         f.write(self.T1.get("1.0", "end"))   
  
-    def clear(self):
+    def clear(self):            #Funcion para borrar todo el texto
         self.T1.delete("1.0", "end")
  
-    def stackify(self):
-        self.stack.append(self.T1.get("1.0", "end - 1c"))
+    def stackify(self):                                     #Funcion que guarda los ultimos cambios 
+        self.stack.append(self.T1.get("1.0", "end - 1c"))   #aplicados al texto 
         if self.stackcursor < 9: self.stackcursor += 1
  
     def undo(self):
-        if self.stackcursor != 0:
-            self.clear()
+        if self.stackcursor != 0:       #Funcion la cual mediante los cambios almacenados
+            self.clear()                #por la funcion anterior deshace lo ultimo que se agrego
             if self.stackcursor > 0: self.stackcursor -= 1
             self.T1.insert("0.0", self.stack[self.stackcursor])
  
-    def redo(self):
-        if len(self.stack) > self.stackcursor + 1:
-            self.clear()
+    def redo(self):                                 
+        if len(self.stack) > self.stackcursor + 1:  #Funcion la cual mediante los cambios almacenados
+            self.clear()                            #por la funcion anterior rehace lo ultimo que se elimino
             if self.stackcursor < 9: self.stackcursor += 1
             self.T1.insert("0.0", self.stack[self.stackcursor])
  
-    def print_stack(self):
-        i = 0
+    def print_stack(self):  #Funcion de prueba para mostrar el funcionamiento
+        i = 0               #de la funcion stackify
         for stack in self.stack:
             print(str(i) + " " + stack)
             i += 1

@@ -39,3 +39,30 @@ for linea in x:
         break
 
 print(a)
+"""
+ regex_Patterns = [r'ENTERO ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*',
+                  r'REAL ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*',
+                  r'BOOLEANO ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*'
+                ]
+        if x[0]!="INICIO":
+            print("No inicia")
+            return "No inicia"
+        
+        elif x[len(x)-1]!="FINAL":
+            print("No finaliza")
+            return "No finaliza"
+
+        x.pop(0)
+        x.pop(len(x)-1)
+
+        for linea in x:
+            for pattern in regex_Patterns:
+                a = re.search(pattern, linea)
+                if (a != None):
+                    print(a)
+                    break
+
+            if(a == None):
+                b = re.search(linea, texto)
+                break
+"""
