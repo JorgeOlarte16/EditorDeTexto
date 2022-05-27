@@ -1,6 +1,7 @@
 from tkinter import *
 from collections import deque
 from tkinter.filedialog import asksaveasfile
+import re
  
 
 #Prueba de que esta porqueria sirva
@@ -33,7 +34,7 @@ class Window:
  
         self.wordlist = [ ["class", "def", "for", "if", "else", "elif", "import", "from", "as", "break", "while"],
                           ["int", "string", "float", "bool", "__init__"],
-                          ["pygame", "tkinter", "sys", "os", "mysql"],
+                          ["pygame", "tkinter", "sys", "os", "mysql", "INICIO", "FINAL"],
                           ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"] ]
  
         self.T1.bind("<Return>", lambda event: self.indent(event.widget))
@@ -60,10 +61,35 @@ class Window:
  
         self.B4 = Button(self.Main, text = "Redo", width = 8, command = self.redo)
         self.B4.pack(padx = 5, pady = 5, side = LEFT)
+
+        self.B4 = Button(self.Main, text = "Verificar", width = 8, command = self.verificar)
+        self.B4.pack(padx = 5, pady = 5, side = LEFT)
  
         self.Main.pack(padx = 5, pady = 5)
  
- 
+    def verificar(self):
+        texto = self.T1.get("1.0", "end")
+        x = texto.split("\n")
+
+        print(x)
+
+        regex_Patterns = [r'ENTERO ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*',
+                  r'REAL ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*',
+                  r'BOOLEANO ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*'
+                ]
+
+        for linea in x:
+            for pattern in regex_Patterns:
+                a = re.search(pattern, linea)
+                if (a != None):
+                    break
+
+            if(a == None):
+                b = re.search(linea, texto)
+                break
+        
+        print(a)
+
     def tagHighlight(self):
         start = "1.0"
         end = "end"
