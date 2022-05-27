@@ -4,38 +4,40 @@ from tkinter.filedialog import asksaveasfile
 import re
  
 
-#Prueba de que esta porqueria sirva
-
 class Window:
     def __init__(self, master):
         self.master = master
         self.master.option_add("*Font", "Verdana 12")
+        #self.master.option_add("*Background", "Black")
  
         self.Main = Frame(self.master)
  
         self.stack = deque(maxlen = 10)
         self.stackcursor = 0
  
-        self.L1 = Label(self.Main, text = "This is my Code Editor")
+        self.L1 = Label(self.Main, text = "EDITOR DE TEXTO")
         self.L1.pack(padx = 5, pady = 5)
  
  
         #---------
  
         self.T1 = Text(self.Main, width = 90, height = 25)
- 
+
+        self.T1.tag_configure("red", foreground = "red", font = "Verdana 12")
         self.T1.tag_configure("orange", foreground = "orange", font = "Verdana 12")
         self.T1.tag_configure("blue", foreground = "blue", font = "Verdana 12")
         self.T1.tag_configure("purple", foreground = "purple", font = "Verdana 12")
         self.T1.tag_configure("green", foreground = "green", font = "Verdana 12")
-        self.T1.tag_configure("red", foreground = "red", font = "Verdana 12")
+        self.T1.tag_configure("gold", foreground = "gold", font = "Verdana 12")
+        self.T1.tag_configure("brown", foreground = "brown", font = "Verdana 12")
  
-        self.tags = ["orange", "blue", "purple", "green", "red"]
+        self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["class", "def", "for", "if", "else", "elif", "import", "from", "as", "break", "while"],
-                          ["int", "string", "float", "bool", "__init__"],
-                          ["pygame", "tkinter", "sys", "os", "mysql", "INICIO", "FINAL"],
-                          ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"] ]
+        self.wordlist = [ ["RETORNA", "FINSI", "SI", "ELSE", "SEGUN", "CASO", "ROMPER", "HAS", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER"],
+                          ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
+                          ["INICIO", "FINAL"],
+                          ["VERDADERO", "FALSO"],
+                          ["Y", "O", "NO", "MAYOR", "MENOR", "IGUAL", "MAYORI", "MENORI", "DIFERENTE",]]
  
         self.T1.bind("<Return>", lambda event: self.indent(event.widget))
          
@@ -70,6 +72,7 @@ class Window:
     def verificar(self):
         texto = self.T1.get("1.0", "end")
         x = texto.split("\n")
+        x.pop(len(x)-1)
 
         print(x)
 
@@ -77,18 +80,29 @@ class Window:
                   r'REAL ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*',
                   r'BOOLEANO ([a-z][a-z0-9]*(=(-?[0-9]+|[a-z][a-z0-9]*))?)(, [a-z][a-z0-9]*(= (-?[0-9]+|[a-z][a-z0-9]*))?)*'
                 ]
+        if x[0]!="INICIO":
+            print("No inicia")
+            return "No inicia"
+        
+        elif x[len(x)-1]!="FINAL":
+            print("No finaliza")
+            return "No finaliza"
+
+        x.pop(0)
+        x.pop(len(x)-1)
 
         for linea in x:
             for pattern in regex_Patterns:
                 a = re.search(pattern, linea)
                 if (a != None):
+                    print(a)
                     break
 
             if(a == None):
                 b = re.search(linea, texto)
                 break
         
-        print(a)
+        
 
     def tagHighlight(self):
         start = "1.0"
@@ -121,7 +135,7 @@ class Window:
                          
  
     def check(self, index, pre, post):
-        letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+        letters = ["", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
                    "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
  
         if self.T1.get(pre) == self.T1.get(index):
@@ -155,9 +169,9 @@ class Window:
                 if index == "": break
  
                 if (num == 1):
-                    self.T1.tag_add(self.tags[4], index, index + " lineend")
+                    self.T1.tag_add(self.tags[5], index, index + " lineend")
                 elif (num == 0):
-                    self.T1.tag_add(self.tags[3], index, "%s+%sc" % (index, mycount.get()))
+                    self.T1.tag_add(self.tags[6], index, "%s+%sc" % (index, mycount.get()))
  
                 self.T1.mark_set("start", "%s+%sc" % (index, mycount.get()))
  
