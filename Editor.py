@@ -23,13 +23,13 @@ class Window:
  
         self.T1 = Text(self.Main, width = 90, height = 25)
 
-        self.T1.tag_configure("red", foreground = "red", font = "Verdana 12")
-        self.T1.tag_configure("orange", foreground = "orange", font = "Verdana 12")
-        self.T1.tag_configure("blue", foreground = "blue", font = "Verdana 12")
-        self.T1.tag_configure("purple", foreground = "purple", font = "Verdana 12")
-        self.T1.tag_configure("green", foreground = "green", font = "Verdana 12")
-        self.T1.tag_configure("gold", foreground = "gold", font = "Verdana 12")
-        self.T1.tag_configure("brown", foreground = "brown", font = "Verdana 12")
+        self.T1.tag_configure("red", foreground = "red", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("orange", foreground = "orange", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("blue", foreground = "blue", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("purple", foreground = "purple", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("green", foreground = "green", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("gold", foreground = "gold", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("brown", foreground = "brown", font = ("Verdana", "12", "bold"))
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
@@ -135,7 +135,7 @@ class Window:
                          
  
     def check(self, index, pre, post):
-        letters = ["", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+        letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
                    "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
  
         if self.T1.get(pre) == self.T1.get(index):
