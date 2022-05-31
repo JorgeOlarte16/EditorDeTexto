@@ -74,12 +74,15 @@ class Window:
         x.pop(len(x)-1)
 
         print(x)
-                
-        if x[0]!="INICIO":          #Funcion que se encargara de verificar que el texto ingresado
+
+        inicio = x[0].replace(" ", "")
+        final = x[len(x)-1].replace(" ", "")
+
+        if inicio !="INICIO":          #Funcion que se encargara de verificar que el texto ingresado
             print("No inicia")      #este correcto mediante los automatas diseñados y programados
             return "No inicia"      #por los otros grupos
-        
-        elif x[len(x)-1]!="FINAL":
+
+        elif final !="FINAL":
             print("No finaliza")
             return "No finaliza"
 
