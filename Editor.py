@@ -76,6 +76,10 @@ class Window:
         print(x)
 
         inicio = x[0].replace(" ", "")
+
+        while (x[len(x)-1] == ""):
+            x.pop(len(x)-1)
+
         final = x[len(x)-1].replace(" ", "")
 
         if inicio !="INICIO":          #Funcion que se encargara de verificar que el texto ingresado
