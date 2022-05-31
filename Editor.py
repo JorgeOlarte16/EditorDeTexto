@@ -1,6 +1,6 @@
 from tkinter import *
 from collections import deque
-from tkinter.filedialog import asksaveasfile
+from tkinter.filedialog import askopenfile, asksaveasfile
 import re
  
 
@@ -45,7 +45,7 @@ class Window:
         #---------
  
         self.menu = Menu(self.Main)
-        self.menu.add_command(label = "Imprimir", command = self.print_stack)
+        self.menu.add_command(label = "Abrir", command = self.print_stack)
         self.menu.add_command(label = "Deshacer", command = self.undo)          
         self.menu.add_command(label = "Rehacer", command = self.redo)
  
@@ -244,10 +244,16 @@ class Window:
             self.T1.insert("0.0", self.stack[self.stackcursor])
  
     def print_stack(self):  #Funcion de prueba para mostrar el funcionamiento
-        i = 0               #de la funcion stackify
-        for stack in self.stack:
-            print(str(i) + " " + stack)
-            i += 1
+        filename = askopenfile(mode='r', filetypes=[('Texto', '*.txt')])
+
+        if filename == None:
+            return 0
+
+        self.T1.delete("0.0", END)
+        f = open(filename.name, "r")
+        text = f.read()
+        self.T1.insert("0.0", text)
+        self.update()
 
 root = Tk()
 window = Window(root)
