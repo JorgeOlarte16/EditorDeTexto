@@ -1,7 +1,11 @@
+from distutils.log import error
 from tkinter import *
 from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
 import re
+from tokenize import String
+
+from pyparsing import line
  
 
 class Window:
@@ -29,10 +33,13 @@ class Window:
         self.T1.tag_configure("green", foreground = "green", font = ("Verdana", "12", "bold"))    #resaltar las palabras reservadas
         self.T1.tag_configure("gold", foreground = "gold", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("brown", foreground = "brown", font = ("Verdana", "12", "bold"))
+        self.T1.tag_configure("error", foreground= "white", background= "red")
+        self.T1.tag_configure("blanco", foreground= "black", background= "white")
+        
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["RETORNA", "FINSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAS", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER"],
+        self.wordlist = [ ["RETORNA", "FINSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAS", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
                           ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
@@ -68,32 +75,46 @@ class Window:
  
         self.Main.pack(padx = 5, pady = 5)
  
-    def verificar(self):                    
+    def verificar(self):     
         texto = self.T1.get("1.0", "end")   
         x = texto.split("\n")
         x.pop(len(x)-1)
+        
 
+        print(len(x))
         print(x)
 
-        inicio = x[0].replace(" ", "")
+        if(x[0] != "" or x[len(x)-1] != ""):
+            while (x[len(x)-1] == ""):
+                x.pop(len(x)-1)
 
-        while (x[len(x)-1] == ""):
+
+            inicio = x[0].replace(" ", "")
+            final = x[len(x)-1].replace(" ", "")
+
+            print(x)
+
+            if inicio !="INICIO":       #Funcion que se encargara de verificar que el texto ingresado
+                print("No inicia") 
+                self.error(1)           #este correcto mediante los automatas diseñados y programados
+                                          #por los otros grupos
+
+            if final !="FINAL":
+                print("No finaliza")
+                self.error(len(x))
+            
+
+            x.pop(0)
             x.pop(len(x)-1)
 
-        final = x[len(x)-1].replace(" ", "")
+        elif(x[0] == ""):
+            self.error(1)
+            print("No inicia \nNo finaliza")
 
-        if inicio !="INICIO":          #Funcion que se encargara de verificar que el texto ingresado
-            print("No inicia")      #este correcto mediante los automatas diseñados y programados
-            return "No inicia"      #por los otros grupos
+    def error(self, linea):
+        inicio = str(float(linea))
+        self.T1.tag_add("error", inicio, inicio + "+1line")
 
-        elif final !="FINAL":
-            print("No finaliza")
-            return "No finaliza"
-
-        x.pop(0)
-        x.pop(len(x)-1)
-
-    
     def tagHighlight(self):
         start = "1.0"                   #Funcion que se encarga de identificar las palabras
         end = "end"                     #reservadas y resaltarlas segun las etiquetas previamente
@@ -215,7 +236,8 @@ class Window:
     def update(self):
         self.stackify()
         self.tagHighlight()     #Funcion que contiene las 3 funciones que
-        self.scan()             #permiten la actualizacion del texto segun se 
+        self.scan()
+        self.T1.tag_remove("error", "1.0", "end")           #permiten la actualizacion del texto segun se 
                                 #ingresa
     def save(self):
                                 #Funcion que se encarga de guardar el texto en txt.
@@ -254,6 +276,7 @@ class Window:
         text = f.read()
         self.T1.insert("0.0", text)
         self.update()
+
 
 root = Tk()
 window = Window(root)
