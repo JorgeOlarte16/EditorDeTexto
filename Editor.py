@@ -1,12 +1,7 @@
-from cgitb import enable
-from faulthandler import disable
 from tkinter import *
 from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
-import re
-from tokenize import String
 
-from pyparsing import line
  
 
 class Window:
@@ -53,7 +48,7 @@ class Window:
         self.T2.pack(side=BOTTOM,padx = 5, pady = 5)
  
         #---------
- 
+
         self.menu = Menu(self.Main)
         self.menu.add_command(label = "Abrir", command = self.print_stack)
         self.menu.add_command(label = "Deshacer", command = self.undo)          
@@ -63,7 +58,7 @@ class Window:
  
         self.B1 = Button(self.Main, text = "Guardar", width = 8, command = self.save)
         self.B1.pack(padx = 5, pady = 5, side = LEFT)
- 
+        
         self.B2 = Button(self.Main, text = "Limpiar", width = 8, command = self.clear)
         self.B2.pack(padx = 5, pady = 5, side = LEFT)
                                                                                         #Creacion de los botones que realizan algunas
@@ -96,22 +91,30 @@ class Window:
 
             print(x)
 
-            if inicio !="INICIO":       #Funcion que se encargara de verificar que el texto ingresado
+            if inicio !="INICIO": 
+                self.T2.insert(INSERT, "No inicia\n")    #Funcion que se encargara de verificar que el texto ingresado
                 print("No inicia") 
                 self.error(1)           #este correcto mediante los automatas diseñados y programados
                                           #por los otros grupos
 
             if final !="FINAL":
+                self.T2.insert(INSERT, "No Finaliza")
                 print("No finaliza")
                 self.error(len(x))
             
 
             x.pop(0)
             x.pop(len(x)-1)
+            
 
         elif(x[0] == ""):
             self.error(1)
+            self.T2.config(state="normal")
+            self.T2.insert(INSERT, "No inicia \nNo finaliza")
+            self.T2.config(state="disable")
             print("No inicia \nNo finaliza")
+        
+        self.T2.config(state='disable')
 
     def error(self, linea):
         inicio = str(float(linea))
@@ -281,6 +284,7 @@ class Window:
 
 
 root = Tk()
+root.title("Editor de texto")
 window = Window(root)
 root.bind("<Key>", lambda event: window.update())
 root.mainloop()
