@@ -1,4 +1,5 @@
-from distutils.log import error
+from cgitb import enable
+from faulthandler import disable
 from tkinter import *
 from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
@@ -23,6 +24,7 @@ class Window:
         self.L1.pack(padx = 5, pady = 5)
  
         self.T1 = Text(self.Main, width = 90, height = 25)
+        self.T2 = Text(self.Main, width = 90, height = 10, state='disable')
         #---------
  
         
@@ -47,7 +49,8 @@ class Window:
  
         self.T1.bind("<Return>", lambda event: self.indent(event.widget))
          
-        self.T1.pack(padx = 5, pady = 5)
+        self.T1.pack(side=TOP,padx = 5, pady = 5)
+        self.T2.pack(side=BOTTOM,padx = 5, pady = 5)
  
         #---------
  
@@ -75,13 +78,12 @@ class Window:
  
         self.Main.pack(padx = 5, pady = 5)
  
-    def verificar(self):     
-        texto = self.T1.get("1.0", "end")   
-        x = texto.split("\n")
+    def verificar(self):      
+        self.T2.configure(state='normal')                
+        texto1 = self.T1.get("1.0", "end")   
+        x = texto1.split("\n")
         x.pop(len(x)-1)
-        
-
-        print(len(x))
+        self.T2.delete("1.0","end")
         print(x)
 
         if(x[0] != "" or x[len(x)-1] != ""):
