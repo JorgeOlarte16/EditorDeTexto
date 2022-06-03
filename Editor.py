@@ -1,6 +1,7 @@
 from tkinter import *
 from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
+import tkinter
 
  
 
@@ -8,10 +9,11 @@ class Window:
     def __init__(self, master):
         self.master = master
         self.master.option_add("*Font", "Verdana 12")
-        
- 
+
         self.Main = Frame(self.master)
- 
+        
+
+        
         self.stack = deque(maxlen = 10)  #Creacion y configuracion de la ventana del editor
         self.stackcursor = 0
  
@@ -21,8 +23,11 @@ class Window:
         self.T1 = Text(self.Main, width = 90, height = 25)
         self.T2 = Text(self.Main, width = 90, height = 10, state='disable')
         #---------
- 
-        
+
+        self.v1 = tkinter.Scrollbar(orient="vertical", command=self.T1.yview)
+        self.v1.pack(side=RIGHT, fill='y')
+        self.T1.configure(yscrollcommand=self.v1.set)
+
         self.T1.tag_configure("red", foreground = "red", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("orange", foreground = "orange", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("blue", foreground = "blue", font = ("Verdana", "12", "bold"))
