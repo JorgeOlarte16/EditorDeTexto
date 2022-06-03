@@ -1,7 +1,7 @@
 from tkinter import *
 from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
-import tkinter
+import tkinter as tk
 
  
 
@@ -48,7 +48,7 @@ class Window:
         self.listado.place(x=0, y=45)
         #---------
 
-        self.v1 = tkinter.Scrollbar(orient="vertical", command=self.T1.yview)
+        self.v1 = Scrollbar(orient="vertical", command=self.T1.yview)
         self.v1.pack(side=RIGHT, fill='y')
         self.T1.configure(yscrollcommand=self.v1.set)
 
