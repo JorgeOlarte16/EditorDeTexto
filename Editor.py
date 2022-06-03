@@ -102,6 +102,11 @@ class Window:
  
         self.Main.pack(padx = 5, pady = 5)
  
+
+    def redrawLineNumber(self):
+        self.listado.redraw()
+
+
     def verificar(self):      
         self.T2.configure(state='normal')                
         texto1 = self.T1.get("1.0", "end")   
@@ -318,7 +323,7 @@ root.title("Editor de texto")
 window = Window(root)
 root.geometry("1024x800")
 root.bind("<Key>", lambda event: window.update())
-root.bind("<B1-Motion>", lambda event: window.update())
-root.bind("<Button-1>", lambda event: window.update())
-root.bind("<MouseWheel>", lambda event: window.update())
+root.bind("<B1-Motion>", lambda event: window.redrawLineNumber())
+root.bind("<Button-1>", lambda event: window.redrawLineNumber())
+root.bind("<MouseWheel>", lambda event: window.redrawLineNumber())
 root.mainloop()
