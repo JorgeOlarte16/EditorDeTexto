@@ -5,6 +5,27 @@ import tkinter
 
  
 
+class TextLineNumbers(tk.Canvas):
+    def __init__(self, *args, **kwargs):
+        tk.Canvas.__init__(self, *args, **kwargs)
+        self.textwidget = None
+
+    def attach(self, text_widget):
+        self.textwidget = text_widget
+        
+    def redraw(self, *args):
+        '''redraw line numbers'''
+        self.delete("all")
+
+        i = self.textwidget.index("@0,0")
+        while True :
+            dline= self.textwidget.dlineinfo(i)
+            if dline is None: break
+            y = dline[1]
+            linenum = str(i).split(".")[0]
+            self.create_text(2,y,anchor="nw", text=linenum)
+            i = self.textwidget.index("%s+1line" % i)
+
 class Window:
     def __init__(self, master):
         self.master = master
@@ -22,6 +43,9 @@ class Window:
  
         self.T1 = Text(self.Main, width = 90, height = 25)
         self.T2 = Text(self.Main, width = 90, height = 10, state='disable')
+        self.listado = TextLineNumbers(width=30, height = 500)
+        self.listado.attach(self.T1)
+        self.listado.place(x=0, y=45)
         #---------
 
         self.v1 = tkinter.Scrollbar(orient="vertical", command=self.T1.yview)
@@ -247,6 +271,7 @@ class Window:
         self.stackify()
         self.tagHighlight()     #Funcion que contiene las 3 funciones que
         self.scan()
+        self.listado.redraw()
         self.T1.tag_remove("error", "1.0", "end")           #permiten la actualizacion del texto segun se 
                                 #ingresa
     def save(self):
@@ -291,5 +316,6 @@ class Window:
 root = Tk()
 root.title("Editor de texto")
 window = Window(root)
+root.geometry("1024x800")
 root.bind("<Key>", lambda event: window.update())
 root.mainloop()
