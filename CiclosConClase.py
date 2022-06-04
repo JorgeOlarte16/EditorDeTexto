@@ -379,10 +379,10 @@ class validarCiclos:
             if self.valCondicionCicloMientras(lineaCierreCiclo, "HASTA", 5, len(lineaCierreCiclo)):
                 return True
             else:
-                self.errores.append(["error condicion ciclo haz", indexLinea + 1])
+                self.errores.append(["error condicion ciclo haz", indexLinea + 2])
                 return False
         else:
-            self.errores.append(["error etiqueta cierre ciclo haz linea:", indexLinea + 1])
+            self.errores.append(["error etiqueta cierre ciclo haz linea:", indexLinea + 2])
             return False
 
 
@@ -402,18 +402,18 @@ class validarCiclos:
                 if self.cicloHaz(line, i):  # validar si el ciclo para esta bien escrito
                     self.mapCicloHaz(line, i)  # mapear ciclo Haz a sintaxis en c
 
-        print("\nErrores: \n", self.errores)
-        print("\nlineas: \n", self.lines)
-        file = open("Ejemplo.txt", "w")
-        for linea in self.lines:
-            file.write(linea + "" + os.linesep)
-        file.close()
+        #print("\nErrores: \n", self.errores)
+        #print("\nlineas: \n", self.lines)
+        #file = open("Ejemplo.txt", "w")
+        #for linea in self.lines:
+        #    file.write(linea + "" + os.linesep)
+        #file.close()
 
 
-with open("Ej1.txt", "r") as tf:
-    lines = tf.read().split('\n')
+#with open("Ej1.txt", "r") as tf:
+    #lines = tf.read().split('\n')
 
-ciclos = validarCiclos(lines)
-ciclos.mapCiclos()
+#ciclos = validarCiclos(lines)
+#ciclos.mapCiclos()
 
 
