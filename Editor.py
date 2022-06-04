@@ -4,6 +4,7 @@ from tkinter.filedialog import askopenfile, asksaveasfile
 import tkinter as tk
 from CiclosConClase import validarCiclos
 import variables as va
+import run as fun
 
  
 
@@ -144,10 +145,9 @@ class Window:
             text1 = validarCiclos(x) 
             text1.mapCiclos()
 
-            print(len(text1.lines))
-            print(x)
-            
-            if(text1.errores[0] != ""):
+            """print(len(text1.lines))
+            print(x)"""
+            if(text1.errores != ""):
                 for a, b in zip(text1.lines, text1.errores):
                     self.error(b[1])
                     self.T2.config(state="normal")
@@ -155,9 +155,18 @@ class Window:
                     self.T2.insert(INSERT, "\n")
                     self.T2.config(state="disable")
 
-            newtext = va.automatas_Variables(x)
+            """text2 = va.automatas_Variables(x)
+            print(text2)
+            self.error(text2[1])
+            self.T2.config(state="normal")
+            self.T2.insert(INSERT, text2[0]+"\n" )
+            self.T2.config(state="disable")"""
 
+            text3 = fun.run(x)
+            print(text3)
+            
 
+            
         elif(x[0] == ""):
             self.error(1)
             self.T2.config(state="normal")

@@ -164,9 +164,9 @@ def automatas_Variables(texto):
       lineaV=lineaV+1
 #=================================================================# ERROR EN DECLARACION #==================================================================
     elif(re.match(r'^(ENTERO|REAL|CARACTER|BOOLEANO)',i)):
-      print('DECLARACION CON ERROR') #ERROR
+      """print('DECLARACION CON ERROR') #ERROR"""
       
-      return ["Error en la linea {}".format(lineaV+1),lineaV]
+      return ["Error en la linea {}".format(lineaV+2),lineaV+2]
 #=================================================================# LINEAS X SALTABLES #==================================================================
     else:
       #print("Linea X que me salto")
