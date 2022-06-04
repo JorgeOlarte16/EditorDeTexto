@@ -3,6 +3,7 @@ from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
 import tkinter as tk
 from CiclosConClase import validarCiclos
+import condicionales as con
 import variables as va
 import run as fun
 
@@ -68,7 +69,7 @@ class Window:
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["RETORNA", "FINSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
+        self.wordlist = [ ["RETORNA", "FSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "MIENTRAS","FUNCION", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
                           ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
@@ -167,6 +168,20 @@ class Window:
             """text3 = fun.run(x)
             print(text3)"""
             
+            text4 = con.validarCondicionales(x)
+            print(text4)
+            if(not text4[0]):
+                a = text4[1]
+                for linea in a:
+                    
+                    self.error(linea[1]+1)
+                    self.T2.config(state="normal")
+                    self.T2.insert(INSERT, linea[0]+" "+str(linea[1]+1))
+                
+            """self.error(text4)
+            self.T2.config(state="normal")
+            self.T2.insert(INSERT, text4[0]+"\n" )
+            self.T2.config(state="disable")"""
 
             
         elif(x[0] == ""):

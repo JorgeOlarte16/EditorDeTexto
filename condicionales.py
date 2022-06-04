@@ -243,9 +243,17 @@ def validarCondicionales(lineas):
             entro_si = True
             conteo_si +=1
             if(result['aceptacion'] == 'Entra'):
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                pos = line.find('ENTONCES')
+                if len(line) >= pos + 5:
+                    for idx in range(pos+8, len(line)):
+                        if line[idx] != ' ':
+                            RESULT[0] = False
+                            RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                            break
+
+                # if line.find(' ') != len(line)-1:
+                #     RESULT[0] = False
+                #     RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
 
                 if not validarCierre('FSI', 'SI', lineas.index(line), lineas, 'SINO'):
                     RESULT[0] = False
@@ -275,9 +283,12 @@ def validarCondicionales(lineas):
         elif 'SINO' == sentence[0]:
             if entro_si:
 
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                if len(line) >= 5:
+                    for idx in range(5, len(line)):
+                        if line[idx] != ' ':
+                            RESULT[0] = False
+                            RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                            break
 
                 entro_si = False
                 entro_sino = True
@@ -313,9 +324,13 @@ def validarCondicionales(lineas):
         
         elif 'FSINO' == sentence[0]:
             if entro_sino:
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                
+                if len(line) >= 6:
+                    for idx in range(6, len(line)):
+                        if line[idx] != ' ':
+                            RESULT[0] = False
+                            RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                            break
 
                 if RESULT[0]:
                     traduccion = ''
@@ -339,9 +354,13 @@ def validarCondicionales(lineas):
 
         elif 'FSI' == sentence[0]:
             if entro_si:
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                
+                if len(line) >= 4:
+                    for idx in range(4, len(line)):
+                        if line[idx] != ' ':
+                            RESULT[0] = False
+                            RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                            break
 
                 if RESULT[0]:
                     traduccion = ''
@@ -376,9 +395,13 @@ def validarCondicionales(lineas):
             result = CondicionUnitaria(sentence[1:])
             
             if(result['aceptacion'] == 'Entra'):
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                pos = line.find('HACER')
+                if len(line) >= pos + 5:
+                    for idx in range(pos+5, len(line)):
+                        if line[idx] != ' ':
+                            RESULT[0] = False
+                            RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                            break
 
                 if not validarCierre('FSEGUN', 'SEGUN', lineas.index(line), lineas):
                     RESULT[0] = False
@@ -411,9 +434,6 @@ def validarCondicionales(lineas):
         elif entro_segun and 'CASO' == sentence[0]:
             if entro_segun:
 
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
 
                 if len(sentence) == 1:
                     RESULT[0] = False
@@ -423,6 +443,13 @@ def validarCondicionales(lineas):
 
                     if ':' in sentence[1]:
                         if '::' not in sentence[1]:
+                            pos = line.find(':')
+                            if len(line) >= pos + 1:
+                                for idx in range(pos+1, len(line)):
+                                    if line[idx] != ' ':
+                                        RESULT[0] = False
+                                        RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                                        break
                             if RESULT[0]:
                                 traduccion = ''
                                 for palabra in sentence:
@@ -432,6 +459,8 @@ def validarCondicionales(lineas):
                                         traduccion += (palabra+' ')
 
                                 RESULT[1].append(traduccion)
+
+                            
                                 
                         else:
                             RESULT[0] = False
@@ -442,6 +471,13 @@ def validarCondicionales(lineas):
                 elif len(sentence) == 3:
                     if ':' not in sentence[1]:
                         if sentence[2] == ':':
+                            pos = line.find(':')
+                            if len(line) >= pos + 1:
+                                for idx in range(pos+1, len(line)):
+                                    if line[idx] != ' ':
+                                        RESULT[0] = False
+                                        RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                                        break
                             if RESULT[0]:
                                 traduccion = ''
                                 for palabra in sentence:
@@ -451,6 +487,8 @@ def validarCondicionales(lineas):
                                         traduccion += (palabra+' ')
 
                                 RESULT[1].append(traduccion)
+                        
+                        
 
                         else:
                             RESULT[0] = False
@@ -459,6 +497,7 @@ def validarCondicionales(lineas):
                         if sentence[2] == ':' or  '::' in sentence[1]:
                             RESULT[0] = False
                             RESULT[1].append(['ERROR: palabra ":" repetida en la linea: ',lineas.index(line)+1])
+               
             else:
                 RESULT[0] = False
                 RESULT[1].append(['ERROR: No se encontro la palabra SEGUN en la linea: ',lineas.index(line)+1])
@@ -467,9 +506,12 @@ def validarCondicionales(lineas):
         elif entro_segun and 'DEOTROMODO:' == sentence[0]:
 
             if entro_segun:
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                pos = line.find(':')
+                if len(line) >= pos + 1:
+                    for idx in range(pos+1, len(line)):
+                        if line[idx] != ' ':
+                            RESULT[0] = False
+                            RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
                 
                 if RESULT[0]:
                     traduccion = ''
@@ -489,9 +531,11 @@ def validarCondicionales(lineas):
         elif entro_segun and 'FSEGUN' == sentence[0]:
 
             if entro_segun:
-                if line.find('\n') != len(line)-1:
-                    RESULT[0] = False
-                    RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
+                if len(line) >= 7:
+                    for idx in range(7, len(line)):
+                        if line[idx] != ' ':
+                            RESULT[0] = False
+                            RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
                 
                 if RESULT[0]:
                     traduccion = ''
@@ -545,11 +589,11 @@ def validarCondicionales(lineas):
 
 
 
-    print(RESULT)
+    # print(RESULT)
     return RESULT
 
-estructura = open('/content/estructura.txt', 'r')
-lineas = estructura.readlines()
+"""estructura = open('/content/estructura.txt', 'r')
+lineas = estructura.read().split('\n')
 
 r = open('resultado.txt','w')
 resultado = validarCondicionales(lineas)
@@ -558,4 +602,4 @@ if(resultado[0]):
         r.close()
         print('COMPILADO EXITOSAMENTE')
 else:
-        print(resultado[1])
+        print(resultado[1])"""
