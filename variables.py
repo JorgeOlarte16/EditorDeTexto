@@ -175,10 +175,10 @@ def automatas_Variables(texto):
 #=================================================================# RETORNA # ============================================================================
   return texto
 
-"""#Pruebas
+#Pruebas
 text=list()
 
-
+"""
 line=input("1)INGRESA LINEA DE CODIGO: ")
 text.append(line)
 line=input("2) INGRESA LINEA DE CODIGO: ")

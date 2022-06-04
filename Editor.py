@@ -2,6 +2,8 @@ from tkinter import *
 from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
 import tkinter as tk
+from CiclosConClase import validarCiclos
+import variables as va
 
  
 
@@ -65,7 +67,7 @@ class Window:
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["RETORNA", "FINSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAS", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
+        self.wordlist = [ ["RETORNA", "FINSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "MIENTRAS", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
                           ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
@@ -113,7 +115,6 @@ class Window:
         x = texto1.split("\n")
         x.pop(len(x)-1)
         self.T2.delete("1.0","end")
-        print(x)
 
         if(x[0] != "" or x[len(x)-1] != ""):
             while (x[len(x)-1] == ""):
@@ -138,8 +139,24 @@ class Window:
             
 
             x.pop(0)
-            x.pop(len(x)-1)
+            x.pop(len(x)-1) 
             
+            text1 = validarCiclos(x) 
+            text1.mapCiclos()
+
+            print(len(text1.lines))
+            print(x)
+            
+            if(text1.errores[0] != ""):
+                for a, b in zip(text1.lines, text1.errores):
+                    self.error(b[1])
+                    self.T2.config(state="normal")
+                    self.T2.insert(INSERT, b)
+                    self.T2.insert(INSERT, "\n")
+                    self.T2.config(state="disable")
+
+            newtext = va.automatas_Variables(x)
+
 
         elif(x[0] == ""):
             self.error(1)
@@ -152,6 +169,7 @@ class Window:
 
     def error(self, linea):
         inicio = str(float(linea))
+        print(inicio)
         self.T1.tag_add("error", inicio, inicio + "+1line")
 
     def tagHighlight(self):
