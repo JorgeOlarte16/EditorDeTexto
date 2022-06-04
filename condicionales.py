@@ -37,7 +37,7 @@ TRADUCIR = {
     'HACER': '){',
     'CASO': '\n\tcase ',
     'DEOTROMODO:': '\n\tdefault: ',
-    'FSEGUN': '\n}'
+    'FSEGUN': 'break;\n}'
 }
 
 def CondicionUnitaria(cadena):
@@ -193,6 +193,18 @@ def Condicion(cadena):
   else:
     return {'aceptacion':'No'}
 
+def validarCierre(cierre,inicio,indexLinea,lineas,excepcion=''):
+        aux = 1;
+        for i in range(indexLinea + 1, len(lineas)):
+            linea = lineas[i].strip('\t\n').split(' ')
+            if excepcion:
+                if excepcion in linea:
+                    aux -= 1
+            if inicio in linea: aux += 1
+            if cierre in linea: aux -= 1
+            if aux == 0: return True
+        return False
+
 """#Funcion Validar
 
 Esta recibe un array con las lineas de un archivo de texto, y va validando una por una si contiene un condicional (ya sea SI o SEGUN), valida que su estructura esta bien escrita y lo transforma a lenguaje C
@@ -202,7 +214,7 @@ Finalmente retorna una array con las lineas que fueron validadas y transformadas
 
 def validarCondicionales(lineas):
     
-        #Valida si hay una estructura SI abierta 
+    #Valida si hay una estructura SI abierta 
     entro_si = False
 
     # Guarda la cantidad de estructuras SI que se encuentran abiertas
@@ -234,7 +246,11 @@ def validarCondicionales(lineas):
                 if line.find('\n') != len(line)-1:
                     RESULT[0] = False
                     RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
-            
+
+                if not validarCierre('FSI', 'SI', lineas.index(line), lineas, 'SINO'):
+                    RESULT[0] = False
+                    RESULT[1].append(['Error: No se encontro la palabra de cierre "FSI": ',lineas.index(line)+1])
+
                 if RESULT[0]:
                 
                     traduccion = ''
@@ -266,6 +282,10 @@ def validarCondicionales(lineas):
                 entro_si = False
                 entro_sino = True
                 conteo_sino += 1
+
+                if not validarCierre('FSINO', 'SINO', lineas.index(line), lineas):
+                    RESULT[0] = False
+                    RESULT[1].append(['Error: No se encontro la palabra de cierre "FSINO": ',lineas.index(line)+1])
 
                 if RESULT[0]:
                     traduccion = ''
@@ -360,6 +380,11 @@ def validarCondicionales(lineas):
                     RESULT[0] = False
                     RESULT[1].append(['Error: Se debe terminar con salto de linea en la linea: ',lineas.index(line)+1])
 
+                if not validarCierre('FSEGUN', 'SEGUN', lineas.index(line), lineas):
+                    RESULT[0] = False
+                    RESULT[1].append(['Error: No se encontro palabra de cierre "FSEGUN": ',lineas.index(line)+1])
+
+
                 if RESULT[0]:
                     traduccion = ''
                     for palabra in sentence:
@@ -407,7 +432,7 @@ def validarCondicionales(lineas):
                                         traduccion += (palabra+' ')
 
                                 RESULT[1].append(traduccion)
-                                print(RESULT)
+                                
                         else:
                             RESULT[0] = False
                             RESULT[1].append(['ERROR: palabra ":" repetida en la linea: ', lineas.index(line)+1])
@@ -426,7 +451,6 @@ def validarCondicionales(lineas):
                                         traduccion += (palabra+' ')
 
                                 RESULT[1].append(traduccion)
-                                print(RESULT)
 
                         else:
                             RESULT[0] = False
@@ -497,27 +521,41 @@ def validarCondicionales(lineas):
                 RESULT[1].append(traduccion)
         
     cambios = 0
-    RESULT[1].remove(' ')
-    print(RESULT[1])
-    
-    for i in range(len(RESULT[1])-1):
-        
-        if 'case' in RESULT[1][i]:      
-            cambios += 1
-            
-            if cambios > 1:
-                
-                RESULT[1][i] = 'break;\n'+RESULT[1][i]
+    if ' ' in RESULT[1]:
+        RESULT[1].remove(' ')
 
-        if 'switch' in RESULT[1][i]:
-            cambios = 0
+    i = 0
+    copiaResultado = RESULT[1].copy()
+    while i < len(RESULT[1]):
+        if not RESULT[0]:
+
+            if not isinstance(RESULT[1][i], list):
+                copiaResultado.remove(RESULT[1][i])
+        else:
+            if 'case' in RESULT[1][i]:
+                cambios += 1
+
+                if cambios > 1:
+                    RESULT[1][i] = 'break;\n'+RESULT[1][i]
+        i += 1
         
-        if(not RESULT[0]):
-            if not isinstance(RESULT[1][i],list) :
-                del(RESULT[1][i])
-    
+    RESULT[1] = copiaResultado
+
+        
 
 
 
     print(RESULT)
     return RESULT
+
+estructura = open('/content/estructura.txt', 'r')
+lineas = estructura.readlines()
+
+r = open('resultado.txt','w')
+resultado = validarCondicionales(lineas)
+if(resultado[0]):
+        r.writelines(resultado[1])
+        r.close()
+        print('COMPILADO EXITOSAMENTE')
+else:
+        print(resultado[1])

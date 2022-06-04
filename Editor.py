@@ -155,15 +155,17 @@ class Window:
                     self.T2.insert(INSERT, "\n")
                     self.T2.config(state="disable")
 
-            """text2 = va.automatas_Variables(x)
+            text2 = va.automatas_Variables(x)
             print(text2)
-            self.error(text2[1])
-            self.T2.config(state="normal")
-            self.T2.insert(INSERT, text2[0]+"\n" )
-            self.T2.config(state="disable")"""
+            if(len(text2) >= 2):
+                if(va.lee_entero(text2[1])):
+                    self.error(text2[1])
+                    self.T2.config(state="normal")
+                    self.T2.insert(INSERT, text2[0]+"\n" )
+                    self.T2.config(state="disable")
 
-            text3 = fun.run(x)
-            print(text3)
+            """text3 = fun.run(x)
+            print(text3)"""
             
 
             
