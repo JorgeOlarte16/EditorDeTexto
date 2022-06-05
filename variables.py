@@ -177,23 +177,3 @@ def automatas_Variables(texto):
 
 #Pruebas
 text=list()
-
-"""
-line=input("1)INGRESA LINEA DE CODIGO: ")
-text.append(line)
-line=input("2) INGRESA LINEA DE CODIGO: ")
-text.append(line)
-line=input("3) INGRESA LINEA DE CODIGO: ")
-text.append(line)
-line=input("4) INGRESA LINEA DE CODIGO: ")
-text.append(line)
-line=input("5) INGRESA LINEA DE CODIGO: ")
-text.append(line)
-print(text)
-
-newtext=automatas_Variables(text) #IMAGINA Q RETORNA UN NUMERO Y NO LAS LINEAS MODIFICADO
-if(lee_entero(newtext[1])):
-  print("Error en la linea {line}".format(line=newtext+1))
-else:
-  print(newtext)
-"""
