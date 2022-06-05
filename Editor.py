@@ -183,6 +183,25 @@ class Window:
             self.T2.insert(INSERT, text4[0]+"\n" )
             self.T2.config(state="disable")"""
 
+
+            if((not text1.errores) and (text2[0]) and text4[0]):
+                traduccionCiclos = validarCiclos(x)
+                print("CIclos: ")
+                print(traduccionCiclos.lines)
+                traduccionVariables = va.automatas_Variables(traduccionCiclos.lines)
+                print("Variables: ") 
+                print(traduccionVariables[0])
+                traduccionCondicionales = con.validarCondicionales(traduccionVariables[0])
+                print("Condicionales: ") 
+                print(traduccionCondicionales)
+
+                files = [('Archivo C', '*.c')]
+                file = asksaveasfile(filetypes = files, defaultextension = files)
+                f = open(file.name, "r")
+                
+                for line in traduccionCondicionales[1]:
+                    f.write(line)
+
             
         elif(x[0] == ""):
             self.error(1)
