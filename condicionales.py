@@ -16,18 +16,10 @@ RESERVED_WORDS_SEGUN = ['SEGUN','HACER','CASO','PROGRAMA','DEOTROMODO','FSEGUN']
 X = re.compile(r'[a-zA-Z]+|(([0]|[1-9][0-9]*)(\.[0-9]+)*)')
 all_var_name = re.compile(r'^[a-zA-Z][\w-]*')
 
-Y = ['Y','O']
-COMP = ['MAYOR','MENOR','IGUAL','MAYORI','MENORI','DIFERENTE']
+Y = ['&&','||']
+COMP = ['>','<','=','>=','<=','!=', '==']
 
 TRADUCIR = {
-    'MAYOR': '>',
-    'MENOR': '<',
-    'IGUAL': '==',
-    'MAYORI': '>=',
-    'MENORI': '<=',
-    'DIFERENTE': '!=',
-    'Y': '&&',
-    'O': '||',
     'SI': 'if(',
     'ENTONCES': '){\n',
     'FSI': '\n}',

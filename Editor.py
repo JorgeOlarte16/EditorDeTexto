@@ -69,11 +69,11 @@ class Window:
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["RETORNA", "FSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "MIENTRAS","FUNCION", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
+        self.wordlist = [ ["RETORNA", "FSI", "SI", "SINO","FSINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "HACER", "MIENTRAS", "DEOTROMODO", "FSEGUN", "FINM","FUNCION", "PARA", "FINP", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
                           ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
-                          ["Y", "O", "NO", "MAYOR", "MENOR", "IGUAL", "MAYORI", "MENORI", "DIFERENTE",]]
+                          ["&&", "||", ">", "<", ">=", "<=", "!=", "==",]]
  
         self.T1.bind("<Return>", lambda event: self.indent(event.widget))
          
@@ -111,9 +111,9 @@ class Window:
         self.listado.redraw()
 
 
-    def verificar(self):      
-        self.T2.configure(state='normal')                
-        texto1 = self.T1.get("1.0", "end")   
+    def verificar(self):                        #Funcion que se encargara de verificar que el texto ingresado
+        self.T2.configure(state='normal')       #este correcto mediante los automatas diseñados y programados                                  
+        texto1 = self.T1.get("1.0", "end")      #por los otros grupos 
         x = texto1.split("\n")
         x.pop(len(x)-1)
         self.T2.delete("1.0","end")
@@ -129,10 +129,9 @@ class Window:
             print(x)
 
             if inicio !="INICIO": 
-                self.T2.insert(INSERT, "No inicia\n")    #Funcion que se encargara de verificar que el texto ingresado
+                self.T2.insert(INSERT, "No inicia\n")    
                 print("No inicia") 
-                self.error(1)           #este correcto mediante los automatas diseñados y programados
-                                          #por los otros grupos
+                self.error(1)           
 
             if final !="FINAL":
                 self.T2.insert(INSERT, "No Finaliza")
@@ -146,8 +145,7 @@ class Window:
             text1 = validarCiclos(x) 
             text1.mapCiclos()
 
-            """print(len(text1.lines))
-            print(x)"""
+           
             if(text1.errores):
                 for a, b in zip(text1.lines, text1.errores):
                     self.error(b[1])
@@ -156,31 +154,27 @@ class Window:
                     self.T2.insert(INSERT, "\n")
                     self.T2.config(state="disable")
 
-            text2 = va.automatas_Variables(x)
-            print(text2)
+            text2 = va.automatas_Variables(x)     #Validacion de las variables
             if(len(text2) >= 2):
                 if(va.lee_entero(text2[1])):
                     self.error(text2[1])
                     self.T2.config(state="normal")
                     self.T2.insert(INSERT, text2[0]+"\n" )
                     self.T2.config(state="disable")
-
-            """text3 = fun.run(x)
-            print(text3)"""
-            
-            text4 = con.validarCondicionales(x)
-            print(text4)
-            if(not text4[0]):
-                a = text4[1]
+    
+            text3 = con.validarCondicionales(x)     #validacion de los condicionales
+            if(not text3[0]):
+                a = text3[1]
                 for linea in a:
                     
                     self.error(linea[1]+1)
                     self.T2.config(state="normal")
                     self.T2.insert(INSERT, linea[0]+" "+str(linea[1]+1))
-                
-            """self.error(text4)
+            
+            """text4 = fun.run(x)           #Validacion de las funciones
+            self.error(text4)
             self.T2.config(state="normal")
-            self.T2.insert(INSERT, text4[0]+"\n" )
+            self.T2.insert(INSERT, text2)
             self.T2.config(state="disable")"""
 
 
@@ -337,13 +331,13 @@ class Window:
                     
     def update(self):
         self.stackify()
-        self.tagHighlight()     #Funcion que contiene las 3 funciones que
-        self.scan()
-        self.listado.redraw()
-        self.T1.tag_remove("error", "1.0", "end")           #permiten la actualizacion del texto segun se 
-                                #ingresa
-    def save(self):
-                                #Funcion que se encarga de guardar el texto en txt.
+        self.tagHighlight()                 #Funcion que contiene las 3 funciones que
+        self.scan()                         #permiten la actualizacion del texto segun se 
+        self.listado.redraw()               #ingresa
+        self.T1.tag_remove("error", "1.0", "end")           
+                                                            
+    def save(self):     #Funcion que se encarga de guardar el texto en txt.
+                                
         files = [('Text Document', '*.txt')]
         file = asksaveasfile(filetypes = files, defaultextension = files)
         f = open(file.name, "a")                
