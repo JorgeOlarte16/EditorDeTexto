@@ -148,7 +148,7 @@ class Window:
 
             """print(len(text1.lines))
             print(x)"""
-            if(text1.errores != ""):
+            if(text1.errores):
                 for a, b in zip(text1.lines, text1.errores):
                     self.error(b[1])
                     self.T2.config(state="normal")
