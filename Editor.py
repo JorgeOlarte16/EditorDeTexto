@@ -145,7 +145,8 @@ class Window:
             text1 = validarCiclos(x) 
             text1.mapCiclos()
 
-            if(text1.errores != ""):        #Validacion de los ciclos
+           
+            if(text1.errores):
                 for a, b in zip(text1.lines, text1.errores):
                     self.error(b[1])
                     self.T2.config(state="normal")
