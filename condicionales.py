@@ -13,11 +13,11 @@ import re
 
 RESERVED_WORDS_SI = ['SI','ENTONCES','PROGRAMA','SINO','FSINO','FSI']
 RESERVED_WORDS_SEGUN = ['SEGUN','HACER','CASO','PROGRAMA','DEOTROMODO','FSEGUN']
-X = re.compile(r'[a-zA-Z]+|(([0]|[1-9][0-9]*)(\.[0-9]+)*)')
+X = re.compile(r'[a-zA-Z]+|((-|)([0]|[1-9][0-9]*)(\.[0-9]+)*)')
 all_var_name = re.compile(r'^[a-zA-Z][\w-]*')
 
 Y = ['&&','||']
-COMP = ['>','<','=','>=','<=','!=', '==']
+COMP = ['>','<','>=','<=','!=', '==', '!']
 
 TRADUCIR = {
     'SI': 'if(',

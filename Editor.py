@@ -6,6 +6,7 @@ from CiclosConClase import validarCiclos
 import condicionales as con
 import variables as va
 import run as fun
+import os
 
  
 
@@ -64,7 +65,6 @@ class Window:
         self.T1.tag_configure("gold", foreground = "gold", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("brown", foreground = "brown", font = ("Verdana", "12", "bold"))
         self.T1.tag_configure("error", foreground= "white", background= "red")
-        self.T1.tag_configure("blanco", foreground= "black", background= "white")
         
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
@@ -73,7 +73,7 @@ class Window:
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
                           ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
-                          ["&&", "||", ">", "<", ">=", "<=", "!=", "==",]]
+                          ["&&", "||", ">", "<", ">=", "<=", "!=", "==", "!"]]
  
         self.T1.bind("<Return>", lambda event: self.indent(event.widget))
          
@@ -117,6 +117,8 @@ class Window:
         x = texto1.split("\n")
         x.pop(len(x)-1)
         self.T2.delete("1.0","end")
+        z = x
+        y = z
 
         if(x[0] != "" or x[len(x)-1] != ""):
             while (x[len(x)-1] == ""):
@@ -163,6 +165,8 @@ class Window:
                     self.T2.config(state="disable")
     
             text3 = con.validarCondicionales(x)     #validacion de los condicionales
+            print("Texto 3")
+            print(text3)
             if(not text3[0]):
                 a = text3[1]
                 for linea in a:
@@ -171,30 +175,36 @@ class Window:
                     self.T2.config(state="normal")
                     self.T2.insert(INSERT, linea[0]+" "+str(linea[1]+1))
             
-            """text4 = fun.run(x)           #Validacion de las funciones
-            self.error(text4)
-            self.T2.config(state="normal")
-            self.T2.insert(INSERT, text2)
-            self.T2.config(state="disable")"""
+            text4 = fun.run(x)           #Validacion de las funciones
+            print(text4)
+            
+            
 
-
-            if((not text1.errores) and (text2[0]) and text4[0]):
-                traduccionCiclos = validarCiclos(x)
+            """if((not text1.errores) and (len(text2) != 2 or (len(text2) == 2 and not va.lee_entero(text2[1]))) and (text3[0])):
+                traduccionCiclos = validarCiclos(z)
                 print("CIclos: ")
                 print(traduccionCiclos.lines)
                 traduccionVariables = va.automatas_Variables(traduccionCiclos.lines)
                 print("Variables: ") 
-                print(traduccionVariables[0])
-                traduccionCondicionales = con.validarCondicionales(traduccionVariables[0])
+                print(traduccionVariables)
+                traduccionCondicionales = con.validarCondicionales(traduccionVariables)
                 print("Condicionales: ") 
                 print(traduccionCondicionales)
+                self.T2.config(state="normal")
+                self.T2.insert(INSERT, "Traduciendo...")
+                self.T2.config(state="disable")
+
 
                 files = [('Archivo C', '*.c')]
                 file = asksaveasfile(filetypes = files, defaultextension = files)
-                f = open(file.name, "r")
+                f = open(file.name, "w")
                 
+                f.write("#include <stdio.h>\n\nmain(){\n")
                 for line in traduccionCondicionales[1]:
-                    f.write(line)
+                    f.write(line + "\n")
+
+                f.write("}")
+                os.startfile(file.name)"""
 
             
         elif(x[0] == ""):
