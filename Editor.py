@@ -69,11 +69,11 @@ class Window:
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["RETORNA", "FSI", "SI", "SINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "MIENTRAS","FUNCION", "PARA", "FMIENTRAS", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
+        self.wordlist = [ ["RETORNA", "FSI", "SI", "SINO","FSINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "HACER", "MIENTRAS", "DEOTROMODO", "FSEGUN", "FINM","FUNCION", "PARA", "FINP", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
                           ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
-                          ["Y", "O", "NO", "MAYOR", "MENOR", "IGUAL", "MAYORI", "MENORI", "DIFERENTE",]]
+                          ["&&", "||", ">", "<", ">=", "<=", "!=", "==",]]
  
         self.T1.bind("<Return>", lambda event: self.indent(event.widget))
          
