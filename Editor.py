@@ -117,8 +117,8 @@ class Window:
         x = texto1.split("\n")
         x.pop(len(x)-1)
         self.T2.delete("1.0","end")
-        z = x
-        y = z
+        noReconocidas = []
+        
 
         if(x[0] != "" or x[len(x)-1] != ""):
             while (x[len(x)-1] == ""):
@@ -143,7 +143,13 @@ class Window:
 
             x.pop(0)
             x.pop(len(x)-1) 
-            
+
+            y = x.copy()
+
+            text4 = fun.run(x)
+            print("text4")
+            print(text4)
+
             text1 = validarCiclos(x) 
             text1.mapCiclos()
 
@@ -175,13 +181,14 @@ class Window:
                     self.T2.config(state="normal")
                     self.T2.insert(INSERT, linea[0]+" "+str(linea[1]+1))
             
-            text4 = fun.run(x)           #Validacion de las funciones
-            print(text4)
+            
+            
+            
             
             
 
-            """if((not text1.errores) and (len(text2) != 2 or (len(text2) == 2 and not va.lee_entero(text2[1]))) and (text3[0])):
-                traduccionCiclos = validarCiclos(z)
+            if((not text1.errores) and (len(text2) != 2 or (len(text2) == 2 and not va.lee_entero(text2[1]))) and (text3[0])):
+                traduccionCiclos = validarCiclos(text4)
                 print("CIclos: ")
                 print(traduccionCiclos.lines)
                 traduccionVariables = va.automatas_Variables(traduccionCiclos.lines)
@@ -190,6 +197,26 @@ class Window:
                 traduccionCondicionales = con.validarCondicionales(traduccionVariables)
                 print("Condicionales: ") 
                 print(traduccionCondicionales)
+
+                print(traduccionCondicionales[1])
+                print(y)
+                
+                cont=1
+                for lines1, lines2 in zip(traduccionCondicionales[1], y):
+                    if(lines1 == (lines2+" ")):
+                        if(lines1 != "" and lines1 != " "):
+                            noReconocidas.append(cont)
+                    cont +=1
+
+                if(noReconocidas):
+                    for line in noReconocidas:
+                        self.error(line+1)
+                        self.T2.config(state="normal")
+                        self.T2.insert(INSERT, "Linea no reconocida # "+str(line+1)+"\n")
+                        self.T2.config(state="disable")
+                    
+                    return 0
+
                 self.T2.config(state="normal")
                 self.T2.insert(INSERT, "Traduciendo...")
                 self.T2.config(state="disable")
@@ -204,8 +231,8 @@ class Window:
                     f.write(line + "\n")
 
                 f.write("}")
-                os.startfile(file.name)"""
-
+                os.startfile(file.name)
+                
             
         elif(x[0] == ""):
             self.error(1)

@@ -45,8 +45,30 @@ def funciones(cadena):
 
                 ##palabra2 = aux[n]
 
+                flag_p = palabra.count("(")
+                flag_pa = 0
 
-                if(letra != ")"):
+                if(flag_p > 0):
+
+                    flag_name = 1
+
+                    tipo = palabra.split(sep='(')
+                    if(tipo[1] == "ENTERO"):
+                        resultado = resultado +" "+ tipo[0]+ "(" + "int"
+                        flag_pa = 1
+                    elif(tipo[1] == "REAL"):
+                        resultado = resultado +" "+ tipo[0]+ "(" + "float"
+                        flag_pa = 1
+                    elif(tipo[1] == "BOOLEANO"):
+                        resultado = resultado +" "+ tipo[0]+ "(" + "bool"
+                        flag_pa = 1
+                    elif(tipo[1] == "CARACTER"):
+                        resultado = resultado +" "+  tipo[0]+ "(" + "char"
+                        flag_pa = 1
+
+
+
+                if(letra != ")" and flag_pa == 0):
                 
                     if(aux[n+1] == "(" or aux[n+1] == ")" or flag_name == 0):
                         flag_name = 1
@@ -57,7 +79,8 @@ def funciones(cadena):
                         ##print("aux: " +aux[n+1])
                         resultado = resultado + " "+x+","
                 else:
-                    resultado = resultado + " " + x
+                    if(flag_pa == 0):
+                        resultado = resultado + " " + x + "{"
             elif(x == "("):
                 resultado = resultado+" "+x
             elif(x == ")"):
@@ -66,7 +89,8 @@ def funciones(cadena):
             n = n+1
         
         ##final = fun+" "+nombre+ "FINF"
-        return resultado
+        resultado = resultado[:-1]
+        return resultado + "}"
 
     else:
         return "Syntax Error f"

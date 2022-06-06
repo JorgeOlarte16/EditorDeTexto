@@ -3,28 +3,33 @@ from llamado import *
 from asignar import *
 from operacion import *
 
-def run(lineas):
+def run(copia):
     cont=0
-    for x in lineas:
+    traduccion = []
+    for x in copia:
         
         if(funciones(x) != "Syntax Error f"):
-            mostrar_funcion(x)
+            traduccion.append(funciones(x))
             cont = cont + 1
         elif(asig(x) != "Syntax Error a"):
-            mostrar_asignar(x)
+            traduccion.append(asig(x))
             cont = cont + 1
         elif(llamado(x) != "Syntax Error l"):
-            mostrar_llamado(x)
+            traduccion.append(llamado(x))
             cont = cont + 1
             ##if(linea_error_l(x) == x):
             ##    print("El error está en la linea: " +x.index)
         elif(operacion(x) != "Syntax Error o"):
-            mostrar_operacion(x)
+            traduccion.append(operacion(x))
             cont = cont + 1
         else:
             ##print("SYNTAX ERROR")
-            print("El error está en la linea #",cont+1)
+            traduccion.append(x)
             cont = cont + 1
+    
+    
+    return(traduccion)
 
 
+#run("text.txt")
 
