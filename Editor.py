@@ -181,9 +181,6 @@ class Window:
                 traduccionCiclos.mapCiclos()                 #Editor v2
                 traduccionVariables = va.automatas_Variables(traduccionCiclos.lines)
                 traduccionCondicionales = con.validarCondicionales(traduccionVariables)
-                
-                print(y)
-                print(traduccionCondicionales)
 
                 cont=1
                 for lines1, lines2 in zip(traduccionCondicionales[1], y):
