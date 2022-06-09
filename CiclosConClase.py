@@ -79,7 +79,7 @@ class validarCiclos:
         aux = 1;
         for i in range(indexLinea + 1, len(self.lines)):
             linea = self.lines[i].strip(' ')
-            if ciclo in linea: aux += 1
+            if linea.startswith(ciclo): aux += 1
             if linea == cierre: aux -= 1
             if aux == 0: return True
         return False
@@ -151,7 +151,7 @@ class validarCiclos:
             condicion = variable + " <= " + partesCondicion[0]
 
         auxlinea = "for(" + inicializacion + " ;" + condicion + " ;" + incremento + ") {"
-        self.lines[self.indexCierreCiclo("FINP", "PARA", indexLinea)] = "};"
+        self.lines[self.indexCierreCiclo("FINP", "PARA", indexLinea)] = "}"
         self.lines[indexLinea] = auxlinea
 
     # validar palabras reservadas para el ciclo mientras esten bien escritas
@@ -185,29 +185,7 @@ class validarCiclos:
             if "|" in parte:
                 partesCondicion2 = parte.split("|")
                 for parte2 in partesCondicion2:
-                    if "<=" in parte2:
-                        partesCondicion2 = parte2.split("<=")
-                        for aux in partesCondicion2:
-                            if aux.isspace() or len(aux) == 0: return False
-                        if len(partesCondicion2) == 2:
-                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                            if state == False: return False
-                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                            if state == False: return False
-                        else:
-                            return False
-                    elif ">=" in parte2:
-                        partesCondicion2 = parte2.split(">=")
-                        for aux in partesCondicion2:
-                            if aux.isspace() or len(aux) == 0: return False
-                        if len(partesCondicion2) == 2:
-                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                            if state == False: return False
-                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                            if state == False: return False
-                        else:
-                            return False
-                    elif "<" in parte2:
+                    if "<" in parte2:
                         partesCondicion2 = parte2.split("<")
                         for aux in partesCondicion2:
                             if aux.isspace() or len(aux) == 0: return False
@@ -220,6 +198,28 @@ class validarCiclos:
                             return False
                     elif ">" in parte2:
                         partesCondicion2 = parte2.split(">")
+                        for aux in partesCondicion2:
+                            if aux.isspace() or len(aux) == 0: return False
+                        if len(partesCondicion2) == 2:
+                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                            if state == False: return False
+                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                            if state == False: return False
+                        else:
+                            return False
+                    elif "<=" in parte2:
+                        partesCondicion2 = parte2.split("<=")
+                        for aux in partesCondicion2:
+                            if aux.isspace() or len(aux) == 0: return False
+                        if len(partesCondicion2) == 2:
+                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                            if state == False: return False
+                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                            if state == False: return False
+                        else:
+                            return False
+                    elif ">=" in parte2:
+                        partesCondicion2 = parte2.split(">=")
                         for aux in partesCondicion2:
                             if aux.isspace() or len(aux) == 0: return False
                         if len(partesCondicion2) == 2:
@@ -259,29 +259,7 @@ class validarCiclos:
                         state = bool(re.match(self.patronVarible, parte2.strip(' ')))
                         if not state: return False
             else:
-                if "<=" in parte:
-                    partesCondicion2 = parte.split("<=")
-                    for aux in partesCondicion2:
-                        if aux.isspace() or len(aux) == 0: return False
-                    if len(partesCondicion2) == 2:
-                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                        if state == False: return False
-                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                        if state == False: return False
-                    else:
-                        return False
-                elif ">=" in parte:
-                    partesCondicion2 = parte.split(">=")
-                    for aux in partesCondicion2:
-                        if aux.isspace() or len(aux) == 0: return False
-                    if len(partesCondicion2) == 2:
-                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                        if state == False: return False
-                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                        if state == False: return False
-                    else:
-                        return False
-                elif "<" in parte:
+                if "<" in parte:
                     partesCondicion2 = parte.split("<")
                     for aux in partesCondicion2:
                         if aux.isspace() or len(aux) == 0: return False
@@ -294,6 +272,28 @@ class validarCiclos:
                         return False
                 elif ">" in parte:
                     partesCondicion2 = parte.split(">")
+                    for aux in partesCondicion2:
+                        if aux.isspace() or len(aux) == 0: return False
+                    if len(partesCondicion2) == 2:
+                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                        if state == False: return False
+                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                        if state == False: return False
+                    else:
+                        return False
+                elif "<=" in parte:
+                    partesCondicion2 = parte.split("<=")
+                    for aux in partesCondicion2:
+                        if aux.isspace() or len(aux) == 0: return False
+                    if len(partesCondicion2) == 2:
+                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                        if state == False: return False
+                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                        if state == False: return False
+                    else:
+                        return False
+                elif ">=" in parte:
+                    partesCondicion2 = parte.split(">=")
                     for aux in partesCondicion2:
                         if aux.isspace() or len(aux) == 0: return False
                     if len(partesCondicion2) == 2:
@@ -359,7 +359,7 @@ class validarCiclos:
         condicion = linea[rangoCondicion].strip(' ')
 
         auxlinea = "while(" + condicion + ") {"
-        self.lines[self.indexCierreCiclo("FINM", "MIENTRAS", indexLinea)] = "};"
+        self.lines[self.indexCierreCiclo("FINM", "MIENTRAS", indexLinea)] = "}"
         self.lines[indexLinea] = auxlinea
 
     ##funcion para mapear de pseudo-codigo a lenguaje c, el ciclo haz
@@ -368,7 +368,9 @@ class validarCiclos:
         lineaCierreCiclo = self.lines[self.indexCierreCicloHaz("HASTA", "HAZ", indexLinea)]
         rango = slice(lineaCierreCiclo.find("HASTA") + 5, len(lineaCierreCiclo))
         condicion = lineaCierreCiclo[rango].strip(' ')
-        auxlinea = "}while(" + condicion + ");"
+        condicion = condicion.replace('|', '||')
+        condicion = condicion.replace('&', '&&')
+        auxlinea = "}while(" + condicion + ")"
         self.lines[self.indexCierreCicloHaz("HASTA", "HAZ", indexLinea)] = auxlinea
 
     # funcion para validar las palabras reservadas para el ciclo haz
@@ -379,10 +381,10 @@ class validarCiclos:
             if self.valCondicionCicloMientras(lineaCierreCiclo, "HASTA", 5, len(lineaCierreCiclo)):
                 return True
             else:
-                self.errores.append(["error condicion ciclo haz", indexLinea + 2])
+                self.errores.append(["error condicion ciclo haz", indexLinea + 1])
                 return False
         else:
-            self.errores.append(["error etiqueta cierre ciclo haz linea:", indexLinea + 2])
+            self.errores.append(["error etiqueta cierre ciclo haz linea:", indexLinea + 1])
             return False
 
 
@@ -402,18 +404,18 @@ class validarCiclos:
                 if self.cicloHaz(line, i):  # validar si el ciclo para esta bien escrito
                     self.mapCicloHaz(line, i)  # mapear ciclo Haz a sintaxis en c
 
-        #print("\nErrores: \n", self.errores)
-        #print("\nlineas: \n", self.lines)
-        #file = open("Ejemplo.txt", "w")
-        #for linea in self.lines:
-        #    file.write(linea + "" + os.linesep)
-        #file.close()
+        """print("\nErrores: \n", self.errores)
+        print("\nlineas: \n", self.lines)
+        file = open("Ejemplo.txt", "w")
+        for linea in self.lines:
+            file.write(linea + "" + os.linesep)
+        file.close()
 
 
-#with open("Ej1.txt", "r") as tf:
-    #lines = tf.read().split('\n')
+with open("Ej1.txt", "r") as tf:
+    lines = tf.read().split('\n')
 
-#ciclos = validarCiclos(lines)
-#ciclos.mapCiclos()
+ciclos = validarCiclos(lines)
+ciclos.mapCiclos()"""
 
 
