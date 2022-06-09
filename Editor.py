@@ -183,10 +183,22 @@ class Window:
                 traduccionCondicionales = con.validarCondicionales(traduccionVariables)
 
                 cont=1
+                correccion = 1
+
+                try:
+                    i = y.index("")
+                    y.remove("")
+                except ValueError:
+                    correccion = 0
+                    i = 0
+
                 for lines1, lines2 in zip(traduccionCondicionales[1], y):
                     if(lines1 == (lines2+" ")):
                         if(lines1 != "" and lines1 != " "):
-                            noReconocidas.append(cont)
+                            if(cont >= i+1):
+                                noReconocidas.append(cont+correccion)
+                            elif(cont < i+1):
+                                noReconocidas.append(cont)
                     cont +=1
 
                 if(noReconocidas):
@@ -350,7 +362,7 @@ class Window:
         self.stackify()
         self.tagHighlight()                 #Funcion que contiene las 3 funciones que
         self.scan()                         #permiten la actualizacion del texto segun se 
-        self.listado.redraw()               #ingresa
+        self.redrawLineNumber()              #ingresa
         self.T1.tag_remove("error", "1.0", "end")           
                                                             
     def save(self):     #Funcion que se encarga de guardar el texto en txt.
