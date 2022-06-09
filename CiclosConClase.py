@@ -404,7 +404,7 @@ class validarCiclos:
                 if self.cicloHaz(line, i):  # validar si el ciclo para esta bien escrito
                     self.mapCicloHaz(line, i)  # mapear ciclo Haz a sintaxis en c
 
-        print("\nErrores: \n", self.errores)
+        """print("\nErrores: \n", self.errores)
         print("\nlineas: \n", self.lines)
         file = open("Ejemplo.txt", "w")
         for linea in self.lines:
@@ -416,6 +416,6 @@ with open("Ej1.txt", "r") as tf:
     lines = tf.read().split('\n')
 
 ciclos = validarCiclos(lines)
-ciclos.mapCiclos()
+ciclos.mapCiclos()"""
 
 
