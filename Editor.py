@@ -128,16 +128,14 @@ class Window:
             inicio = x[0].replace(" ", "")
             final = x[len(x)-1].replace(" ", "")
 
-            print(x)
-
             if inicio !="INICIO": 
                 self.T2.insert(INSERT, "No inicia\n")    
-                print("No inicia") 
+
                 self.error(1)           
 
             if final !="FINAL":
                 self.T2.insert(INSERT, "No Finaliza")
-                print("No finaliza")
+
                 self.error(len(x))
             
 
@@ -147,8 +145,6 @@ class Window:
             y = x.copy()
 
             text4 = fun.run(x)
-            print("text4")
-            print(text4)
 
             text1 = validarCiclos(x) 
             text1.mapCiclos()
@@ -171,8 +167,6 @@ class Window:
                     self.T2.config(state="disable")
     
             text3 = con.validarCondicionales(x)     #validacion de los condicionales
-            print("Texto 3")
-            print(text3)
             if(not text3[0]):
                 a = text3[1]
                 for linea in a:
@@ -181,25 +175,11 @@ class Window:
                     self.T2.config(state="normal")
                     self.T2.insert(INSERT, linea[0]+" "+str(linea[1]+1))
             
-            
-            
-            
-            
-            
 
             if((not text1.errores) and (len(text2) != 2 or (len(text2) == 2 and not va.lee_entero(text2[1]))) and (text3[0])):
                 traduccionCiclos = validarCiclos(text4)
-                print("CIclos: ")
-                print(traduccionCiclos.lines)
                 traduccionVariables = va.automatas_Variables(traduccionCiclos.lines)
-                print("Variables: ") 
-                print(traduccionVariables)
                 traduccionCondicionales = con.validarCondicionales(traduccionVariables)
-                print("Condicionales: ") 
-                print(traduccionCondicionales)
-
-                print(traduccionCondicionales[1])
-                print(y)
                 
                 cont=1
                 for lines1, lines2 in zip(traduccionCondicionales[1], y):
@@ -239,7 +219,6 @@ class Window:
             self.T2.config(state="normal")
             self.T2.insert(INSERT, "No inicia \nNo finaliza")
             self.T2.config(state="disable")
-            print("No inicia \nNo finaliza")
         
         self.T2.config(state='disable')
 

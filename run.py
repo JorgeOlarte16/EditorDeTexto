@@ -4,13 +4,13 @@ from asignar import *
 from operacion import *
 
 def run(copia):
-    cont=0
-    traduccion = []
+    cont=0 ## contador para identificar en que linea está el error
+    traduccion = [] ##vector de todas las lines y traducidas
     for x in copia:
         
         if(funciones(x) != "Syntax Error f"):
-            traduccion.append(funciones(x))
-            cont = cont + 1
+            traduccion.append(funciones(x)) ##añadir lo que está dentro de parentesis a el vector
+            cont = cont + 1 
         elif(asig(x) != "Syntax Error a"):
             traduccion.append(asig(x))
             cont = cont + 1
