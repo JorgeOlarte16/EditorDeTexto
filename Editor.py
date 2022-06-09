@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import * 
 from collections import deque
 from tkinter.filedialog import askopenfile, asksaveasfile
 import tkinter as tk
@@ -130,13 +130,13 @@ class Window:
 
             if inicio !="INICIO": 
                 self.T2.insert(INSERT, "No inicia\n")    
-
                 self.error(1)           
+                return 0                #Editor v2
 
             if final !="FINAL":
                 self.T2.insert(INSERT, "No Finaliza")
-
                 self.error(len(x))
+                return 0                #Editor v2
             
 
             x.pop(0)
@@ -148,7 +148,6 @@ class Window:
 
             text1 = validarCiclos(x) 
             text1.mapCiclos()
-
            
             if(text1.errores):
                 for a, b in zip(text1.lines, text1.errores):
@@ -177,10 +176,15 @@ class Window:
             
 
             if((not text1.errores) and (len(text2) != 2 or (len(text2) == 2 and not va.lee_entero(text2[1]))) and (text3[0])):
+                
                 traduccionCiclos = validarCiclos(text4)
+                traduccionCiclos.mapCiclos()                 #Editor v2
                 traduccionVariables = va.automatas_Variables(traduccionCiclos.lines)
                 traduccionCondicionales = con.validarCondicionales(traduccionVariables)
                 
+                print(y)
+                print(traduccionCondicionales)
+
                 cont=1
                 for lines1, lines2 in zip(traduccionCondicionales[1], y):
                     if(lines1 == (lines2+" ")):
