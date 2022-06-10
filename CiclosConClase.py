@@ -8,6 +8,7 @@ class validarCiclos:
         self.errores = [] # variable para alamcenar los errores.
         self.patronVarible = "^[A-Za-z0-9_-]*$"  # patron para nombre de variables.
         self.patronNumero = "^[0-9]*$"
+        self.riservis = ["RETORNA", "FINF","FALSO","VERDADERO","SI","SINO","SEGUN","ENTONCES","FSIN","FSINO","SINO","HACER","CASO","DEOTROMODO","FSEGUN","HAZ","MIENTRAS","PARA","FINM","FINP","BOOLEANO","ENTERO","REAL","CARACTER"]
 
     # validar palabras del reservadas para el ciclo para.
     def valPalabrasCicloPara(self,linea):
@@ -30,6 +31,49 @@ class validarCiclos:
         else:
             isValido = [False, ' error de sintaxis "Hasta" ']
             return isValido
+
+    #validar palabras reservadas en el ciclo para.
+    def valPalabrasReservadasPara(self, linea, indexlinea):
+        posI = linea.find("PARA") + 4
+        posF = linea.find("HASTA")
+        rango = slice(posI, posF)
+        inicializacion = linea[rango]
+
+        if '=' in inicializacion:  # validar si tene una asignacion, para valdiar cada una de las variables.
+            partesInicializacion = inicializacion.split('=')
+            for i in partesInicializacion:
+                aux = i.strip(" ")
+                for palabra in self.riservis:
+                    if palabra == aux:
+                        self.errores.append(["error uso de palabra reservada: ", indexlinea + 1])
+                        return False
+        else:  # si no tiene asignacion validamos si la variable esta bien escrita
+            aux = inicializacion.strip(" ")
+            for palabra in self.riservis:
+                if palabra == aux:
+                    self.errores.append(["error uso de palabra reservada: ", indexlinea + 1])
+                    return False
+
+        rango = slice(linea.find("HASTA") + 5, linea.find("HACER"))
+        condicion = linea[rango].strip(' ')
+        partesCondicion = condicion.split(" ")
+
+        if len(partesCondicion) == 1:  # evaluar si la condicion es valida
+            for palabra in self.riservis:
+                if palabra == partesCondicion[0]:
+                    self.errores.append(["error uso de palabra reservada: ", indexlinea + 1])
+                    return False
+        if len(partesCondicion) == 2:
+            for palabra in self.riservis:
+                if palabra == partesCondicion[0]:
+                    self.errores.append(["error uso de palabra reservada: ", indexlinea + 1])
+                    return False
+            for palabra in self.riservis:
+                if palabra == partesCondicion[1]:
+                    self.errores.append(["error uso de palabra reservada: ", indexlinea + 1])
+                    return False
+
+        return True
 
     # validar inicializacion variable ciclo para
     def valInicialozacionCicloPara(self, linea):
@@ -154,6 +198,72 @@ class validarCiclos:
         self.lines[self.indexCierreCiclo("FINP", "PARA", indexLinea)] = "}"
         self.lines[indexLinea] = auxlinea
 
+    #validar palabras reservadas ciclo mientras
+    def valPalabrasReservadasMientras(self, linea,  inicio, incrementoInicio, final, indexLinea):
+        rango = slice(linea.find(inicio) + incrementoInicio, final)
+        condicion = linea[rango].strip(' ')
+        partesCondicion = condicion.split("&")
+
+        for parte in partesCondicion:
+            partesCondicion2 = parte.split("|")
+            for parte2 in partesCondicion2:
+                if ">=" in  parte2:
+                    aux = parte2.split(">=")
+                    for i in aux:
+                        stripSpace = i.strip(" ")
+                        for palabra in self.riservis:
+                            if palabra == stripSpace:
+                                self.errores.append(["error uso de palabra reservada: ", indexLinea + 1])
+                                return False
+                if "<=" in parte2:
+                    aux = parte2.split("<=")
+                    for i in aux:
+                        stripSpace = i.strip(" ")
+                        for palabra in self.riservis:
+                            if palabra == stripSpace:
+                                self.errores.append(["error uso de palabra reservada: ", indexLinea + 1])
+                                return False
+                if "<" in parte2:
+                    aux = parte2.split("<")
+                    for i in aux:
+                        stripSpace = i.strip(" ")
+                        for palabra in self.riservis:
+                            if palabra == stripSpace:
+                                self.errores.append(["error uso de palabra reservada: ", indexLinea + 1])
+                                return False
+                if ">" in parte2:
+                    aux = parte2.split(">")
+                    for i in aux:
+                        stripSpace = i.strip(" ")
+                        for palabra in self.riservis:
+                            if palabra == stripSpace:
+                                self.errores.append(["error uso de palabra reservada: ", indexLinea + 1])
+                                return False
+                if "==" in parte2:
+                    aux = parte2.split("==")
+                    for i in aux:
+                        stripSpace = i.strip(" ")
+                        for palabra in self.riservis:
+                            if palabra == stripSpace:
+                                self.errores.append(["error uso de palabra reservada: ", indexLinea + 1])
+                                return False
+                if "!=" in parte2:
+                    aux = parte2.split("!=")
+                    for i in aux:
+                        stripSpace = i.strip(" ")
+                        for palabra in self.riservis:
+                            if palabra == stripSpace:
+                                self.errores.append(["error uso de palabra reservada: ", indexLinea + 1])
+                                return False
+                stripSpace = parte2.strip(" ")
+                for palabra in self.riservis:
+                    if palabra == stripSpace:
+                        self.errores.append(["error uso de palabra reservada: ", indexLinea + 1])
+                        return False
+        return True
+
+
+
     # validar palabras reservadas para el ciclo mientras esten bien escritas
     def valPalabraCicloMientras(self, linea):
         isValido = [True, ""]
@@ -185,29 +295,7 @@ class validarCiclos:
             if "|" in parte:
                 partesCondicion2 = parte.split("|")
                 for parte2 in partesCondicion2:
-                    if "<" in parte2:
-                        partesCondicion2 = parte2.split("<")
-                        for aux in partesCondicion2:
-                            if aux.isspace() or len(aux) == 0: return False
-                        if len(partesCondicion2) == 2:
-                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                            if state == False: return False
-                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                            if state == False: return False
-                        else:
-                            return False
-                    elif ">" in parte2:
-                        partesCondicion2 = parte2.split(">")
-                        for aux in partesCondicion2:
-                            if aux.isspace() or len(aux) == 0: return False
-                        if len(partesCondicion2) == 2:
-                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                            if state == False: return False
-                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                            if state == False: return False
-                        else:
-                            return False
-                    elif "<=" in parte2:
+                    if "<=" in parte2:
                         partesCondicion2 = parte2.split("<=")
                         for aux in partesCondicion2:
                             if aux.isspace() or len(aux) == 0: return False
@@ -220,6 +308,28 @@ class validarCiclos:
                             return False
                     elif ">=" in parte2:
                         partesCondicion2 = parte2.split(">=")
+                        for aux in partesCondicion2:
+                            if aux.isspace() or len(aux) == 0: return False
+                        if len(partesCondicion2) == 2:
+                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                            if state == False: return False
+                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                            if state == False: return False
+                        else:
+                            return False
+                    elif "<" in parte2:
+                        partesCondicion2 = parte2.split("<")
+                        for aux in partesCondicion2:
+                            if aux.isspace() or len(aux) == 0: return False
+                        if len(partesCondicion2) == 2:
+                            state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                            if state == False: return False
+                            state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                            if state == False: return False
+                        else:
+                            return False
+                    elif ">" in parte2:
+                        partesCondicion2 = parte2.split(">")
                         for aux in partesCondicion2:
                             if aux.isspace() or len(aux) == 0: return False
                         if len(partesCondicion2) == 2:
@@ -259,29 +369,7 @@ class validarCiclos:
                         state = bool(re.match(self.patronVarible, parte2.strip(' ')))
                         if not state: return False
             else:
-                if "<" in parte:
-                    partesCondicion2 = parte.split("<")
-                    for aux in partesCondicion2:
-                        if aux.isspace() or len(aux) == 0: return False
-                    if len(partesCondicion2) == 2:
-                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                        if state == False: return False
-                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                        if state == False: return False
-                    else:
-                        return False
-                elif ">" in parte:
-                    partesCondicion2 = parte.split(">")
-                    for aux in partesCondicion2:
-                        if aux.isspace() or len(aux) == 0: return False
-                    if len(partesCondicion2) == 2:
-                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
-                        if state == False: return False
-                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
-                        if state == False: return False
-                    else:
-                        return False
-                elif "<=" in parte:
+                if "<=" in parte:
                     partesCondicion2 = parte.split("<=")
                     for aux in partesCondicion2:
                         if aux.isspace() or len(aux) == 0: return False
@@ -294,6 +382,28 @@ class validarCiclos:
                         return False
                 elif ">=" in parte:
                     partesCondicion2 = parte.split(">=")
+                    for aux in partesCondicion2:
+                        if aux.isspace() or len(aux) == 0: return False
+                    if len(partesCondicion2) == 2:
+                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                        if state == False: return False
+                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                        if state == False: return False
+                    else:
+                        return False
+                elif "<" in parte:
+                    partesCondicion2 = parte.split("<")
+                    for aux in partesCondicion2:
+                        if aux.isspace() or len(aux) == 0: return False
+                    if len(partesCondicion2) == 2:
+                        state = bool(re.match(self.patronVarible, partesCondicion2[0].strip(' ')))
+                        if state == False: return False
+                        state = bool(re.match(self.patronVarible, partesCondicion2[1].strip(' ')))
+                        if state == False: return False
+                    else:
+                        return False
+                elif ">" in parte:
+                    partesCondicion2 = parte.split(">")
                     for aux in partesCondicion2:
                         if aux.isspace() or len(aux) == 0: return False
                     if len(partesCondicion2) == 2:
@@ -394,17 +504,21 @@ class validarCiclos:
             line = self.lines[i].strip(' ')
             if line.startswith('PARA'):
                 if self.valCicloPara(line, i):  # validar si el ciclo para esta bien escrito
-                    self.mapCicloPara(line, i)  # mapear ciclo para a sintaxis en c
+                    if self.valPalabrasReservadasPara(line, i): #validar que no contenga palabras reservadas
+                        self.mapCicloPara(line, i)  # mapear ciclo para a sintaxis en c
 
             if line.startswith('MIENTRAS'):
                 if self.cicloMientras(line, i):  # validar si el ciclo para esta bien escrito
-                    self.mapCicloMientras(line, i)  # mapear ciclo mientras a sintaxis en c
+                    if self.valPalabrasReservadasMientras(line,"MIENTRAS",8,line.find("HACER"), i):
+                        self.mapCicloMientras(line, i)  # mapear ciclo mientras a sintaxis en c
 
             if line.startswith('HAZ'):
                 if self.cicloHaz(line, i):  # validar si el ciclo para esta bien escrito
-                    self.mapCicloHaz(line, i)  # mapear ciclo Haz a sintaxis en c
+                    lineaCierreCiclo = self.lines[self.indexCierreCicloHaz("HASTA", "HAZ", i)]
+                    if self.valPalabrasReservadasMientras(lineaCierreCiclo,  "HASTA", 5, len(lineaCierreCiclo), i):
+                        self.mapCicloHaz(line, i)  # mapear ciclo Haz a sintaxis en c
 
-        """print("\nErrores: \n", self.errores)
+        print("\nErrores: \n", self.errores)
         print("\nlineas: \n", self.lines)
         file = open("Ejemplo.txt", "w")
         for linea in self.lines:
@@ -416,6 +530,6 @@ with open("Ej1.txt", "r") as tf:
     lines = tf.read().split('\n')
 
 ciclos = validarCiclos(lines)
-ciclos.mapCiclos()"""
+ciclos.mapCiclos()
 
 
