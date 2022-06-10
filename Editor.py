@@ -69,7 +69,7 @@ class Window:
  
         self.tags = ["orange", "blue", "purple", "green", "red", "gold", "brown"]
  
-        self.wordlist = [ ["RETORNA", "FSI", "SI", "SINO","FSINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "HACER", "MIENTRAS", "DEOTROMODO", "FSEGUN", "FINM","FUNCION", "PARA", "FINP", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
+        self.wordlist = [ ["RETORNA", "FSI", "SI", "SINO","FSINO","ENTONCES", "SEGUN", "CASO", "ROMPER", "HAZ", "HACER", "MIENTRAS", "DEOTROMODO", "FSEGUN", "FINM","FUNCION", "PARA", "HASTA", "FINP", "FHAZ", "FPARA", "IMPRIMIR", "LEER", "FINF"],
                           ["ENTERO", "CARACTER", "REAL", "BOOLEANO"],
                           ["INICIO", "FINAL"],                          #Conjuntos de las palabras reservadas
                           ["VERDADERO", "FALSO"],
