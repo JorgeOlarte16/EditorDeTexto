@@ -518,18 +518,6 @@ class validarCiclos:
                     if self.valPalabrasReservadasMientras(lineaCierreCiclo,  "HASTA", 5, len(lineaCierreCiclo), i):
                         self.mapCicloHaz(line, i)  # mapear ciclo Haz a sintaxis en c
 
-        print("\nErrores: \n", self.errores)
-        print("\nlineas: \n", self.lines)
-        file = open("Ejemplo.txt", "w")
-        for linea in self.lines:
-            file.write(linea + "" + os.linesep)
-        file.close()
 
-
-with open("Ej1.txt", "r") as tf:
-    lines = tf.read().split('\n')
-
-ciclos = validarCiclos(lines)
-ciclos.mapCiclos()
 
 
